@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+// routes/web.php
+
+
+Route::group(
+[
+	'prefix' => LaravelLocalization::setLocale(),
+	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+], function(){ //.
+    Route::get('/',function(){
+        return view('dashboard');
+	});
 });
+
+/** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
+
+
+// Route::get('/', function () {
+//     return view('dashboard');
+// });

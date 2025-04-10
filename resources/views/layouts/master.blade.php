@@ -8,6 +8,8 @@
     <meta name="description" content="Webmin - Bootstrap 4 & Angular 5 Admin Dashboard Template" />
     <meta name="author" content="potenzaglobalsolutions.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    {{--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  --}}
+
     @include('layouts.head')
 </head>
 
@@ -52,7 +54,9 @@
 
     <!--=================================
  footer -->
-
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ {{--  <!-- Include Bootstrap Bundle (which includes Popper.js) -->  --}}
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     @include('layouts.footer-scripts')
 
 </body>

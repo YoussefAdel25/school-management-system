@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
 class CreateAdminUserSeeder extends Seeder
 {
@@ -18,6 +19,9 @@ class CreateAdminUserSeeder extends Seeder
      */
     public function run()
     {
+
+
+        DB::table('users')->delete();
         // إنشاء المستخدم الإداري
         $user = User::Create([
 

@@ -22,8 +22,19 @@ class ClassStore extends FormRequest
     public function rules(): array
     {
         return [
-            'name_en' => 'required',
-            'name_ar' => 'required',
+           'listClasses.*.name_en' => 'required',  // تحقق من وجود القيمة وأنها نص
+        'listClasses.*.name_ar' => 'required',  //
+        'listClasses.*.gradeId' => 'required',  //
+        ];
+    }
+
+    public function messages(){
+
+        return [
+
+            'name_en.required' => trans('validation.required1'),
+            'name_ar.required' => trans('validation.required2'),
+            'gradeId.required' => trans('validation.required2'),
         ];
     }
 }

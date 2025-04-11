@@ -10,6 +10,8 @@ use Illuminate\Http\Client\Events\RequestSending;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GradesStore;
+use App\Models\Classroom;
+
 
 class GradesController extends Controller
 {
@@ -20,11 +22,11 @@ class GradesController extends Controller
     {
 
         $grades = Grade::all();
-    if ($grades->isEmpty()) {
-        // يمكنك إما إعادة توجيه أو إظهار رسالة خاصة
-        return view('pages.grades.grades', ['grades' => []]);
-    }
-    return view('pages.grades.grades', compact('grades'));
+        if ($grades->isEmpty()) {
+            // يمكنك إما إعادة توجيه أو إظهار رسالة خاصة
+            return view('pages.grades.grades', ['grades' => []]);
+        }
+        return view('pages.grades.grades', compact('grades'));
     }
 
     /**
@@ -120,16 +122,19 @@ class GradesController extends Controller
     {
 
         try {
-            $grade = Grade::find($request->id); // محاولة العثور على السجل
 
-            if ($grade) {
-                $grade->delete(); // إذا كان السجل موجودًا، قم بحذفه
-                toastr()->success(trans('messages.delete'));
+            $classId = classroom::where('gradeId', $request->id)->exists();
+
+            if ($classId) {
+
+
+                toastr()->error(trans('grades.deleteErr'));
                 return redirect(route('grades.index'));
             } else {
-                return redirect()->back()->with('error', 'Grade not found!');
 
-
+                Grade::find($request->id)->delete(); // محاولة العثور على السجل
+                toastr()->success(trans('messages.delete'));
+                return redirect(route('grades.index'));
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);

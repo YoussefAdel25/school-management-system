@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Classrooms\ClassroomController;
 use App\Http\Controllers\Grades\GradesController;
+use App\Http\Controllers\Sections\SectionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -52,15 +53,32 @@ Route::group(
 
         // =============================================Classrooms=======================================
 
-        // Route::resource('/classrooms',ClassroomController::class);
+        Route::prefix('classrooms')->name('classrooms.')->controller(ClassroomController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::patch('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy', 'destroy')->name('destroy');
+            Route::post('/filter', 'filter')->name('filter');
+            Route::post('/deleteAll', 'deleteAll')->name('deleteAll');
 
-
-
-        Route::controller(ClassroomController::class)->prefix('classrooms')->group(function () {
-            Route::get('/', 'index')->name('classrooms.index');
-            Route::post('/store', 'store')->name('classrooms.store');
-            Route::patch('/update', 'update')->name('classrooms.update');
-            Route::delete('/destroy', 'destroy')->name('classrooms.destroy');
         });
+
+        Route::get('classes/{gradeId}',  [ClassroomController::class,'getClassesByGrade']);
+
+        Route::prefix('sections')->name('sections.')->controller(SectionController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::patch('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy', 'destroy')->name('destroy');
+            
+        });
+
+
+        // Route::controller(ClassroomController::class)->prefix('classrooms')->group(function () {
+        //     Route::get('/', 'index')->name('classrooms.index'); // عرض البيانات
+        //     Route::POST('/store', 'store')->name('classrooms.store'); // إضافة بيانات جديدة
+        //     Route::PATCH('/update', 'update')->name('classrooms.update'); // تحديث بيانات
+        //     Route::DELETE('/destroy', 'destroy')->name('classrooms.destroy'); // حذف بيانات
+        // });
     }
 );

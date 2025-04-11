@@ -17,4 +17,14 @@ class Grade extends Model
     use HasFactory;
     use HasTranslations;
 
+    public function sections()
+    {
+        return $this->hasMany('App\Models\Section', 'gradeId');
+    }
+
+    public function classrooms()
+{
+    return $this->hasMany('App\Models\Classroom', 'gradeId');
+}
+
 }

@@ -47,11 +47,29 @@
                             <li> <a href="{{ route('classrooms.index') }}">{{ trans('main-sidebar.ClassroomsList') }} </a> </li>
                         </ul>
                     </li>
+
+
+
                     <!-- menu item todo-->
+                    <!-- sections-->
                     <li>
-                        <a href="todo-list.html"><i class="ti-menu-alt"></i><span class="right-nav-text">Todo
-                                list</span> </a>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#sections-menu">
+                            <div class="pull-left">
+                                <!-- Suitable Icon for Sections -->
+                                <i class="fas fa-list"></i>
+                                <span class="right-nav-text">{{ trans('main-sidebar.sections') }}</span>
+                            </div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        <ul id="sections-menu" class="collapse" data-parent="#sidebarnav">
+                            <li><a href="{{ route('sections.index') }}">{{ trans('main-sidebar.sectionsList') }}</a></li>
+                        </ul>
                     </li>
+
+
+
+
                     <!-- menu item chat-->
                     <li>
                         <a href="chat-page.html"><i class="ti-comments"></i><span class="right-nav-text">Chat

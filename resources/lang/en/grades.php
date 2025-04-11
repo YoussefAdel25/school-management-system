@@ -16,7 +16,8 @@ return [
    'warning' => 'Are you sure about the deletion process?',
    'deleteStage' => 'Delete Grade',
    'error' => 'The Grade Name is already exits!',
-   'noGrades' => 'No Data!'
+   'noGrades' => 'No Data!',
+   'deleteErr'=>'The grade cannot be deleted because it has rows attached to it',
 
 
 ];

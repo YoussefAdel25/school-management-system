@@ -7,5 +7,7 @@ return [
    'Grades List' => 'Grades List',
    'Classrooms' => 'Classrooms',
    'ClassroomsList' => 'Classrooms List',
+   'sections' => 'Sections',
+   'sectionsList' => 'Sections List',
 
 ];

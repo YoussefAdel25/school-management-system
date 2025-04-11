@@ -15,45 +15,36 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        $classes = Classroom::all();
+        $classrooms = Classroom::all();
         $grades = Grade::all();
-        return view('pages.classrooms.classrooms', compact('classes', 'grades'));
+        return view('pages.classrooms.classrooms', compact('classrooms', 'grades'));
     }
 
 
     public function create() {}
 
     public function store(Request $request)
-    {
-        try {
+{
+    $validated = $request->validate([
+        'classrooms' => 'required|array',
+        'classrooms.*.name_ar' => 'required|string|max:255',
+        'classrooms.*.name_en' => 'required|string|max:255',
+        'classrooms.*.gradeId' => 'required|exists:grades,id',
+    ]);
 
-            // $validated = $request->validated();
-            $listClasses = $request['listClasses'];
-
-
-            foreach ($listClasses as $class) {
-
-                $isExists  = Classroom::where('name->ar', $class['name_ar'])
-                ->orWhere('name->en', $class['name_en'])
-                ->exists();
-
-                if ($isExists) {
-                    return redirect()->back()->withErrors(trans('classes.error'));
-                }
-
-
-
-                $myClass = new Classroom();
-                $myClass->name = ['en' => $class['name_en'], 'ar' => $class['name_ar']];
-                $myClass->gradeId = $class['gradeId'];
-                $myClass->save();
-            }
-            toastr()->success(trans('messages.success'));
-            return redirect(route('classrooms.index'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        }
+    foreach ($request->classrooms as $classroom) {
+        Classroom::create([
+            'name' => [
+                'ar' => $classroom['name_ar'],
+                'en' => $classroom['name_en']
+            ],
+            'gradeId' => $classroom['gradeId'],
+        ]);
     }
+
+    toastr()->success(trans('messages.success'));
+    return redirect()->route('classrooms.index');
+}
 
 
     public function show()
@@ -72,13 +63,67 @@ class ClassroomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update()
-    {
-        //
-    }
+
+
+    public function update(Request $request, $id)
+{
+    // dd("وصلنا هنا",$request->all());
+
+
+    $classroom = Classroom::findOrFail($id);
+    $classroom->setTranslation('name', 'ar', $request->name_ar);
+    $classroom->setTranslation('name', 'en', $request->name_en);
+    $classroom->gradeId = $request->gradeId;
+    $classroom->save();
+
+    return redirect()->route('classrooms.index')->with('success', 'تم التعديل بنجاح');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy() {}
+    public function destroy(Request $request)
+    {
+
+        try {
+            Classroom::findOrFail($request->id)->delete();
+            toastr()->error(trans('messages.delete'),'  ');
+            return redirect()->route('classrooms.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+     public function deleteAll(Request $request){
+         $classId = explode(',', $request->deleteAllId);
+
+
+         Classroom::whereIn('id',$classId)->delete();
+         toastr()->success('messages.delete');
+         return redirect(route('classrooms.index'));
+
+
+     }
+
+      public function filter(Request $request){
+
+
+        $grades = Grade::all();
+                $classrooms = Classroom::all();
+
+
+        $filterClasses = Classroom::select('*')->where('gradeId',$request->gradeId)->get();
+        return view('pages.classrooms.classrooms',compact('filterClasses','grades','classrooms'));
+
+
+      }
+
+
+      public function getClassesByGrade($gradeId)
+{
+    $classes = Classroom::where('gradeId', $gradeId)->pluck('name', 'id');
+    return response()->json($classes);
+}
+
 }

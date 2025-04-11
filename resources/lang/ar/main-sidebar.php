@@ -7,6 +7,8 @@ return [
    'Grades List'  => 'قائمة المراحل الدراسية',
    'Classrooms' => 'الفصول الدراسية',
    'ClassroomsList' => 'قائمة الفصول الدراسية',
+   'sections' => 'الفصول',
+   'sectionsList' => 'قائمة الفصول',
 
 
 ];

@@ -33,6 +33,8 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+        Route::namespace($this->namespace) // هذا يجعل المسار يلتزم بالـ namespace
+         ->group(base_path('routes/web.php'));
     }
 
     /**

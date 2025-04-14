@@ -21,8 +21,11 @@
                         </ul>
                     </li>
                     <!-- menu title -->
-                    <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Components </li>
-                    <!-- menu item Elements-->
+                    <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">{{ trans('main-sidebar.title') }} </li>
+
+
+
+                    <!-- Grades-->
                     <li>
                         <a href="javascript:void(0);" data-toggle="collapse" data-target="#elements">
                             <div class="pull-left"><i class="ti-palette"></i><span
@@ -35,7 +38,12 @@
 
                         </ul>
                     </li>
-                    <!-- menu item calendar-->
+
+
+
+
+
+                    <!-- Classrooms-->
                     <li>
                         <a href="javascript:void(0);" data-toggle="collapse" data-target="#calendar-menu">
                             <div class="pull-left"><i class="ti-calendar"></i><span
@@ -50,7 +58,7 @@
 
 
 
-                    <!-- menu item todo-->
+
                     <!-- sections-->
                     <li>
                         <a href="javascript:void(0);" data-toggle="collapse" data-target="#sections-menu">
@@ -70,72 +78,41 @@
 
 
 
-                    <!-- menu item chat-->
+
+
+                    <!-- Teachers-->
                     <li>
-                        <a href="chat-page.html"><i class="ti-comments"></i><span class="right-nav-text">Chat
-                            </span></a>
-                    </li>
-                    <!-- menu item mailbox-->
-                    <li>
-                        <a href="mail-box.html"><i class="ti-email"></i><span class="right-nav-text">Mail
-                                box</span> <span class="badge badge-pill badge-warning float-right mt-1">HOT</span> </a>
-                    </li>
-                    <!-- menu item Charts-->
-                    <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#chart">
-                            <div class="pull-left"><i class="ti-pie-chart"></i><span
-                                    class="right-nav-text">Charts</span></div>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#Teachers-menu">
+                            <div class="pull-left"><i class="fas fa-chalkboard-teacher"></i></i><span
+                                    class="right-nav-text">{{trans('main-sidebar.teachers')}}</span></div>
                             <div class="pull-right"><i class="ti-plus"></i></div>
                             <div class="clearfix"></div>
                         </a>
-                        <ul id="chart" class="collapse" data-parent="#sidebarnav">
-                            <li> <a href="chart-js.html">Chart.js</a> </li>
-                            <li> <a href="chart-morris.html">Chart morris </a> </li>
-                            <li> <a href="chart-sparkline.html">Chart Sparkline</a> </li>
+                        <ul id="Teachers-menu" class="collapse" data-parent="#sidebarnav">
+                            <li> <a href="{{ route( 'teachers.index' ) }}">{{ trans('main-sidebar.teachersList') }}</a> </li>
+
                         </ul>
                     </li>
 
-                    <!-- menu font icon-->
+
+
+
+                    <!-- Parents-->
                     <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#font-icon">
-                            <div class="pull-left"><i class="ti-home"></i><span class="right-nav-text">font
-                                    icon</span></div>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#Parents-menu">
+                            <div class="pull-left"><i class="fas fa-user-tie"></i><span
+                                    class="right-nav-text">{{trans('main-sidebar.Parents')}}</span></div>
                             <div class="pull-right"><i class="ti-plus"></i></div>
                             <div class="clearfix"></div>
                         </a>
-                        <ul id="font-icon" class="collapse" data-parent="#sidebarnav">
-                            <li> <a href="fontawesome-icon.html">font Awesome</a> </li>
-                            <li> <a href="themify-icons.html">Themify icons</a> </li>
-                            <li> <a href="weather-icon.html">Weather icons</a> </li>
+                        <ul id="Parents-menu" class="collapse" data-parent="#sidebarnav">
+                            <li> <a href="{{url('add-parent')}}">{{trans('main-sidebar.List_Parents')}}</a> </li>
                         </ul>
                     </li>
-                    <!-- menu title -->
-                    <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Widgets, Forms & Tables </li>
-                    <!-- menu item Widgets-->
-                    <li>
-                        <a href="widgets.html"><i class="ti-blackboard"></i><span class="right-nav-text">Widgets</span>
-                            <span class="badge badge-pill badge-danger float-right mt-1">59</span> </a>
-                    </li>
-                    <!-- menu item Form-->
-                    <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#Form">
-                            <div class="pull-left"><i class="ti-files"></i><span class="right-nav-text">Form &
-                                    Editor</span></div>
-                            <div class="pull-right"><i class="ti-plus"></i></div>
-                            <div class="clearfix"></div>
-                        </a>
-                        <ul id="Form" class="collapse" data-parent="#sidebarnav">
-                            <li> <a href="editor.html">Editor</a> </li>
-                            <li> <a href="editor-markdown.html">Editor Markdown</a> </li>
-                            <li> <a href="form-input.html">Form input</a> </li>
-                            <li> <a href="form-validation-jquery.html">form validation jquery</a> </li>
-                            <li> <a href="form-wizard.html">form wizard</a> </li>
-                            <li> <a href="form-repeater.html">form repeater</a> </li>
-                            <li> <a href="input-group.html">input group</a> </li>
-                            <li> <a href="toastr.html">toastr</a> </li>
-                        </ul>
-                    </li>
-                    <!-- menu item table -->
+
+
+
+
                     <li>
                         <a href="javascript:void(0);" data-toggle="collapse" data-target="#table">
                             <div class="pull-left"><i class="ti-layout-tab-window"></i><span class="right-nav-text">data

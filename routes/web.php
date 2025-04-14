@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\Classrooms\ClassroomController;
-use App\Http\Controllers\Grades\GradesController;
-use App\Http\Controllers\Sections\SectionController;
+use Livewire\Livewire;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Livewire\AddParent;
+use App\Http\Controllers\Grades\GradesController;
+use App\Http\Controllers\Sections\SectionController;
+use App\Http\Controllers\Classrooms\ClassroomController;
+use App\Http\Controllers\Teachers\TeacherController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +24,8 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // routes/web.php
 
-Auth::routes();
 
+Auth::routes();
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/', function () {
         return view('auth.login');
@@ -33,17 +37,10 @@ Route::group(
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
     ],
-    function () { //.
-
-
-        // Route::get('/',function(){
-        //     return view('dashboard');
-        // });
+    function () { //
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
-
-        // ========================================Grades========================================
-        //    Route::resource('/grades', GradesController::class);
+        // =============================================================Grades========================================
         Route::controller(GradesController::class)->prefix('grades')->group(function () {
             Route::get('/', 'index')->name('grades.index');
             Route::POST('/store', 'store')->name('grades.store');
@@ -51,8 +48,7 @@ Route::group(
             Route::delete('/delete', 'destroy')->name('grades.destroy');
         });
 
-        // =============================================Classrooms=======================================
-
+        // =============================================================Classrooms========================================================
         Route::prefix('classrooms')->name('classrooms.')->controller(ClassroomController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/store', 'store')->name('store');
@@ -60,25 +56,35 @@ Route::group(
             Route::delete('/destroy', 'destroy')->name('destroy');
             Route::post('/filter', 'filter')->name('filter');
             Route::post('/deleteAll', 'deleteAll')->name('deleteAll');
-
         });
+        Route::get('classes/{gradeId}',  [ClassroomController::class, 'getClassesByGrade']);
 
-        Route::get('classes/{gradeId}',  [ClassroomController::class,'getClassesByGrade']);
-
+        //============================================================Sections====================================================================
         Route::prefix('sections')->name('sections.')->controller(SectionController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/store', 'store')->name('store');
             Route::patch('/update/{id}', 'update')->name('update');
             Route::delete('/destroy', 'destroy')->name('destroy');
-            
         });
 
 
-        // Route::controller(ClassroomController::class)->prefix('classrooms')->group(function () {
-        //     Route::get('/', 'index')->name('classrooms.index'); // عرض البيانات
-        //     Route::POST('/store', 'store')->name('classrooms.store'); // إضافة بيانات جديدة
-        //     Route::PATCH('/update', 'update')->name('classrooms.update'); // تحديث بيانات
-        //     Route::DELETE('/destroy', 'destroy')->name('classrooms.destroy'); // حذف بيانات
-        // });
+        // /=========================================================Teachers======================================================
+        Route::prefix('teachers')->name('teachers.')->controller(TeacherController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::patch('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy', 'destroy')->name('destroy');
+        });
+
+        //============================================================Parents=======================================================
+
+        Route::get('/add-parent', AddParent::class)->name('addParent');
+          Livewire::setUpdateRoute(function ($handle) {
+               return Route::post('/livewire/update', $handle);
+        });
+
+
+
+
     }
 );

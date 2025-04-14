@@ -2,6 +2,7 @@
 
 return [
 
+   'title' => 'AlgoThorn Schools',
    'Dashboard' => 'Dashboard',
    'Grades' => 'Grades',
    'Grades List' => 'Grades List',
@@ -9,5 +10,11 @@ return [
    'ClassroomsList' => 'Classrooms List',
    'sections' => 'Sections',
    'sectionsList' => 'Sections List',
+   'Parents'=>'Parents',
+    'Add_Parent'=>'Add Parent',
+    'List_Parents'=>'List Parents',
+    'teachers' =>'Teachers',
+    'teachersList'=>'Teachers List'
+
 
 ];

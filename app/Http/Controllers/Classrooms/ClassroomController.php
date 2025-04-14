@@ -24,60 +24,43 @@ class ClassroomController extends Controller
     public function create() {}
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'classrooms' => 'required|array',
-        'classrooms.*.name_ar' => 'required|string|max:255',
-        'classrooms.*.name_en' => 'required|string|max:255',
-        'classrooms.*.gradeId' => 'required|exists:grades,id',
-    ]);
-
-    foreach ($request->classrooms as $classroom) {
-        Classroom::create([
-            'name' => [
-                'ar' => $classroom['name_ar'],
-                'en' => $classroom['name_en']
-            ],
-            'gradeId' => $classroom['gradeId'],
+    {
+        $validated = $request->validate([
+            'classrooms' => 'required|array',
+            'classrooms.*.name_ar' => 'required|string|max:255',
+            'classrooms.*.name_en' => 'required|string|max:255',
+            'classrooms.*.gradeId' => 'required|exists:grades,id',
         ]);
+
+        foreach ($request->classrooms as $classroom) {
+            Classroom::create([
+                'name' => [
+                    'ar' => $classroom['name_ar'],
+                    'en' => $classroom['name_en']
+                ],
+                'gradeId' => $classroom['gradeId'],
+            ]);
+        }
+
+        toastr()->success(trans('messages.success'));
+        return redirect()->route('classrooms.index');
     }
 
-    toastr()->success(trans('messages.success'));
-    return redirect()->route('classrooms.index');
-}
-
-
-    public function show()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit()
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
 
 
     public function update(Request $request, $id)
-{
-    // dd("وصلنا هنا",$request->all());
+    {
+        // dd("وصلنا هنا",$request->all());
 
 
-    $classroom = Classroom::findOrFail($id);
-    $classroom->setTranslation('name', 'ar', $request->name_ar);
-    $classroom->setTranslation('name', 'en', $request->name_en);
-    $classroom->gradeId = $request->gradeId;
-    $classroom->save();
+        $classroom = Classroom::findOrFail($id);
+        $classroom->setTranslation('name', 'ar', $request->name_ar);
+        $classroom->setTranslation('name', 'en', $request->name_en);
+        $classroom->gradeId = $request->gradeId;
+        $classroom->save();
 
-    return redirect()->route('classrooms.index')->with('success', 'تم التعديل بنجاح');
-}
+        return redirect()->route('classrooms.index')->with('success', 'تم التعديل بنجاح');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -87,7 +70,7 @@ class ClassroomController extends Controller
 
         try {
             Classroom::findOrFail($request->id)->delete();
-            toastr()->error(trans('messages.delete'),'  ');
+            toastr()->error(trans('messages.delete'), '  ');
             return redirect()->route('classrooms.index');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
@@ -95,35 +78,32 @@ class ClassroomController extends Controller
     }
 
 
-     public function deleteAll(Request $request){
-         $classId = explode(',', $request->deleteAllId);
+    public function deleteAll(Request $request)
+    {
+        $classId = explode(',', $request->deleteAllId);
 
 
-         Classroom::whereIn('id',$classId)->delete();
-         toastr()->success('messages.delete');
-         return redirect(route('classrooms.index'));
+        Classroom::whereIn('id', $classId)->delete();
+        toastr()->success('messages.delete');
+        return redirect(route('classrooms.index'));
+    }
 
-
-     }
-
-      public function filter(Request $request){
+    public function filter(Request $request)
+    {
 
 
         $grades = Grade::all();
-                $classrooms = Classroom::all();
+        $classrooms = Classroom::all();
 
 
-        $filterClasses = Classroom::select('*')->where('gradeId',$request->gradeId)->get();
-        return view('pages.classrooms.classrooms',compact('filterClasses','grades','classrooms'));
+        $filterClasses = Classroom::select('*')->where('gradeId', $request->gradeId)->get();
+        return view('pages.classrooms.classrooms', compact('filterClasses', 'grades', 'classrooms'));
+    }
 
 
-      }
-
-
-      public function getClassesByGrade($gradeId)
-{
-    $classes = Classroom::where('gradeId', $gradeId)->pluck('name', 'id');
-    return response()->json($classes);
-}
-
+    public function getClassesByGrade($gradeId)
+    {
+        $classes = Classroom::where('gradeId', $gradeId)->pluck('name', 'id');
+        return response()->json($classes);
+    }
 }

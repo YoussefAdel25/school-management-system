@@ -6,15 +6,15 @@ return [
    'Dashboard' => 'لوحة التحكم',
    'Grades'  => 'المراحل الدراسية',
    'Grades List'  => 'قائمة المراحل الدراسية',
-   'Classrooms' => 'الفصول الدراسية',
-   'ClassroomsList' => 'قائمة الفصول الدراسية',
-   'sections' => 'الفصول',
-   'sectionsList' => 'قائمة الفصول',
+   'Classrooms' => 'الصفوف الدراسية',
+   'ClassroomsList' => 'قائمة الصفوف الدراسية',
+   'sections' => 'الاقسام الدراسية',
+   'sectionsList' => 'قائمة الاقسام الدراسية',
    'Parents'=>'اولياء الامور',
     'List_Parents'=>'قائمة اولياء الامور',
     'Add_Parent'=>'اضافة ولي امر',
-    'teachers' =>'المعلمين',
-    'teachersList'=>'قائمة المعلمين'
+    'teachers' =>'المدرسين',
+    'teachersList'=>'قائمة المدرسين'
 
 
 ];

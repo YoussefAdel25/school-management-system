@@ -71,10 +71,15 @@ Route::group(
         // /=========================================================Teachers======================================================
         Route::prefix('teachers')->name('teachers.')->controller(TeacherController::class)->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
             Route::post('/store', 'store')->name('store');
-            Route::patch('/update/{id}', 'update')->name('update');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::patch('/update','update')->name('update');
             Route::delete('/destroy', 'destroy')->name('destroy');
         });
+
+            // Route::resource('teachers/', TeacherController::class);//
+
 
         //============================================================Parents=======================================================
 

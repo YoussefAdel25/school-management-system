@@ -1,15 +1,17 @@
 <?php
 
 return [
-    'name'=>'الفصل',
+    'name'=>'القسم',
     'nameClass' =>'الصف',
     'nameGrade' => 'ألمرحلة',
     'selectGrade'=> 'حدد المرحلة',
+    'selectClass' => 'حدد الصف',
+
 
     'processes'=>'العمليات',
-    'addSection' => 'اضافة فصل جديد',
-    'englishSection' =>'اسم الفصل باللغة الانجليزية',
-    'arabicSection' =>'اسم الفصل باللغة العربية',
+    'addSection' => 'اضافة قسم جديد',
+    'englishSection' =>'اسم القسم باللغة الانجليزية',
+    'arabicSection' =>'اسم القسم باللغة العربية',
     'addRow'=> 'اضافة صف',
     'deleteRow'=> 'حذف صف',
     'status' => 'الحالة',
@@ -24,10 +26,10 @@ return [
     'submit' => 'حفظ البيانات',
     'editSection' => 'تعديل المرحلة',
     'confirmDelete' => 'هل انت متاكد من حذف',
-    'deleteSection' =>'حذف الفصل',
+    'deleteSection' =>'حذف القسم',
     'error' => 'اسم الصف موجود بالفعل!',
-    'required1' => 'الفصل باللغة الانجليزية مطلوب!',
-    'required2' => 'الفصل باللغة العربية مطلوب!',
+    'required1' => 'القسم باللغة الانجليزية مطلوب!',
+    'required2' => 'القسم باللغة العربية مطلوب!',
     'notes' =>'ملاجظات',
     'DeleteAll' => 'مسح المحدد',
     'searchBySection' => 'بحث بالمرحلة',

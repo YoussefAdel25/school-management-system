@@ -16,11 +16,16 @@ class Teacher extends Model
      protected $guarded= [];
 
 
-     public function gender(){
+     public function genders(){
          return $this->belongsTo('App\Models\Gender','genderId');
      }
 
      public function specializations(){
         return $this->belongsTo('App\Models\Specialization','specializationId');
+     }
+
+     public function sections()
+     {
+         return $this->belongsToMany('App\Models\Section','teachers_sections');
      }
 }

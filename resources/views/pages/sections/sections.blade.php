@@ -1,8 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-    @toastr_css
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    @toastr_css
+
     <style>
         /* Table Styles */
         .table th,
@@ -202,12 +205,16 @@
                                                                                 @method('PATCH')
                                                                                 <div class="row">
                                                                                     <div class="col">
+                                                                                        <label for="inputName"
+                                                                                        class="control-label">{{ trans('sections.arabicSection') }}</label>
                                                                                         <input type="text"
                                                                                             name="name_ar"
                                                                                             class="form-control"
                                                                                             value="{{ $list_Sections->getTranslation('name', 'ar') }}">
                                                                                     </div>
                                                                                     <div class="col">
+                                                                                        <label for="inputName"
+                                                                                        class="control-label">{{ trans('sections.englishSection') }}</label>
                                                                                         <input type="text"
                                                                                             name="name_en"
                                                                                             class="form-control"
@@ -228,141 +235,185 @@
                                                                                 </div><br>
 
                                                                                 <div class="col">
-                                                                                <div class="form-check">
-                                                                                    <input type="checkbox"
-                                                                                        class="form-check-input"
-                                                                                        name="status"
-                                                                                        id="status{{ $list_Sections->id }}"
-                                                                                        value="1"
-                                                                                    {{ $list_Sections->status == 1 ? 'checked' : '' }}
+                                                                                    <label for="inputName" class="control-label">{{ trans('teacher.nameTeacher') }}</label>
+                                                                                    <select name="teacher_id[]" id="teacherSelect" class="form-control form-select-sm shadow-sm border border-primary"
+                                                                                            multiple data-live-search="true" title="{{ trans('teacher.selectTeacher') }}">
 
-                                                                                    <label
-                                                                                        for="status{{ $list_Sections->id }}"
-                                                                                        class="form-check-label">{{ trans('sections.status') }}</label>
+                                                                                        <!-- المدرسين المختارين مسبقًا -->
+                                                                                        @foreach ($list_Sections->teachers as $teacher)
+                                                                                            <option value="{{ $teacher['id'] }}" selected>{{ $teacher['name'] }}</option>
+                                                                                        @endforeach
+
+                                                                                        <!-- باقي المدرسين -->
+                                                                                        @foreach ($teachers as $teacher)
+                                                                                            @if (!in_array($teacher->id, $list_Sections->teachers->pluck('id')->toArray()))
+                                                                                                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div><br>
+
+
+                                                                                <div class="col">
+                                                                                    <div class="form-check">
+                                                                                        <input type="checkbox"
+                                                                                            class="form-check-input"
+                                                                                            name="status"
+                                                                                            id="status{{ $list_Sections->id }}"
+                                                                                            value="1"
+                                                                                            {{ $list_Sections->status == 1 ? 'checked' : '' }}
+                                                                                            <label
+                                                                                            for="status{{ $list_Sections->id }}"
+                                                                                            class="form-check-label">{{ trans('sections.status') }}</label>
+                                                                                    </div>
                                                                                 </div>
-                                                                        </div>
 
-                                                                        <div class="modal-footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary"
-                                                                                data-dismiss="modal">{{ trans('sections.close') }}</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-success">{{ trans('sections.submit') }}</button>
+
+
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">{{ trans('sections.close') }}</button>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-success">{{ trans('sections.submit') }}</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
-                                                                        </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                            </div>
 
-                                            {{-- Delete Section Modal --}}
-                                            <div class="modal fade" id="delete{{ $list_Sections->id }}" tabindex="-1"
-                                                role="dialog"
-                                                aria-labelledby="deleteModalLabel{{ $list_Sections->id }}"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"
-                                                                id="deleteModalLabel{{ $list_Sections->id }}">
-                                                                {{ trans('sections.delete') }}
-                                                            </h5>
-                                                            <button type="button" class="close"
-                                                                data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form
-                                                                action="{{ route('sections.destroy', $list_Sections->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <p>{{ trans('sections.warning') }}</p>
-                                                                <input type="hidden" name="id"
-                                                                    value="{{ $list_Sections->id }}">
+                                                            {{-- Delete Section Modal --}}
+                                                            <div class="modal fade"
+                                                                id="delete{{ $list_Sections->id }}" tabindex="-1"
+                                                                role="dialog"
+                                                                aria-labelledby="deleteModalLabel{{ $list_Sections->id }}"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="deleteModalLabel{{ $list_Sections->id }}">
+                                                                                {{ trans('sections.delete') }}
+                                                                            </h5>
+                                                                            <button type="button" class="close"
+                                                                                data-dismiss="modal"
+                                                                                aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form
+                                                                                action="{{ route('sections.destroy', $list_Sections->id) }}"
+                                                                                method="POST">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <p>{{ trans('sections.warning') }}</p>
+                                                                                <input type="hidden" name="id"
+                                                                                    value="{{ $list_Sections->id }}">
 
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">{{ trans('sections.close') }}</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger">{{ trans('sections.delete') }}</button>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">{{ trans('sections.close') }}</button>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-danger">{{ trans('sections.delete') }}</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
-                </tbody>
-                </table>
             </div>
         </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-@endforeach
-</div>
-</div>
 
-<!-- Add New Section Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ trans('sections.addSection') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <!-- Add New Section Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{ trans('sections.addSection') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('sections.store') }}" method="POST">
+                            @csrf
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="text" name="name_ar" class="form-control"
+                                        placeholder="{{ trans('sections.arabicSection') }}" required>
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="name_en" class="form-control"
+                                        placeholder="{{ trans('sections.englishSection') }}" required>
+                                </div>
+                            </div><br>
+
+                            <div class="form-group">
+                                <label for="gradeId" class="control-label">{{ trans('sections.nameGrade') }}</label>
+                                <select name="gradeId" class="custom-select" required>
+                                    <option value="" selected disabled>{{ trans('sections.selectGrade') }}
+                                    </option>
+
+                                    @foreach ($listGrades as $list_Grade)
+                                        <option value="{{ $list_Grade->id }}">{{ $list_Grade->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div><br>
+
+                            <div class="form-group">
+                                <label for="Class_id" class="control-label">{{ trans('sections.nameClass') }}</label>
+                                <select name="Class_id" class="custom-select" required>
+                                    <option value="" selected disabled>{{ trans('sections.selectClass') }}
+                                    </option>
+                                    <!-- Class options will be populated dynamically here -->
+                                </select>
+                            </div><br>
+
+                            <!-- Redesigned Teacher Select -->
+                            <div class="form-group">
+                                <label for="teacherSelect" class="form-label fw-bold text-primary">
+                                    {{ trans('teacher.nameTeacher') }}
+                                </label>
+                                <select name="teacher_id[]" id="teacherSelect"
+                                    class="form-control form-select-sm shadow-sm border border-primary" multiple
+                                    data-live-search="true" title="{{ trans('teacher.selectTeacher') }}">
+
+                                    @foreach ($teachers as $teacher)
+                                        <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ trans('sections.close') }}</button>
+                        <button type="submit" class="btn btn-success">{{ trans('sections.submit') }}</button>
+                    </div>
+
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                <form action="{{ route('sections.store') }}" method="POST">
-                    @csrf
-                    <div class="form-row">
-                        <div class="col">
-                            <input type="text" name="name_ar" class="form-control"
-                                placeholder="{{ trans('sections.arabicSection') }}" required>
-                        </div>
-
-                        <div class="col">
-                            <input type="text" name="name_en" class="form-control"
-                                placeholder="{{ trans('sections.englishSection') }}" required>
-                        </div>
-                    </div><br>
-
-                    <div class="form-group">
-                        <label for="gradeId" class="control-label">{{ trans('sections.nameGrade') }}</label>
-                        <select name="gradeId" class="custom-select" required>
-                            <option value="" selected disabled>{{ trans('sections.selectGrade') }}</option>
-                            @foreach ($listGrades as $list_Grade)
-                                <option value="{{ $list_Grade->id }}">{{ $list_Grade->name }}</option>
-                            @endforeach
-                        </select>
-                    </div><br>
-
-                    <div class="form-group">
-                        <label for="Class_id" class="control-label">{{ trans('sections.nameClass') }}</label>
-                        <select name="Class_id" class="custom-select" required>
-                            <!-- Class options will be populated dynamically here -->
-                        </select>
-                    </div><br>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-dismiss="modal">{{ trans('sections.close') }}</button>
-                <button type="submit" class="btn btn-success">{{ trans('sections.submit') }}</button>
-            </div>
-
-            </form>
         </div>
-    </div>
-</div>
 
-</div>
+
+    </div>
 </div>
 @endsection
 
@@ -383,7 +434,7 @@
                     dataType: "json",
                     success: function(data) {
                         $('select[name="Class_id"]')
-                    .empty(); // Clear the existing class options
+                            .empty(); // Clear the existing class options
                         $.each(data, function(key, value) {
                             // Append each class as an option
                             $('select[name="Class_id"]').append('<option value="' +
@@ -400,4 +451,11 @@
         });
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.selectpicker').selectpicker(); // تفعيل Bootstrap Select
+    });
+</script>
+
 @endsection

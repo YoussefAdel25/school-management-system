@@ -21,7 +21,11 @@ class TeacherController extends Controller
 
     public function index()
     {
-        return $this->Teacher->getAllTeachers();
+      $Teachers = $this->Teacher->getAllTeachers();
+
+       return view('pages.teachers.teachers',compact('Teachers'));
+
+
     }
 
     /**
@@ -29,7 +33,9 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        //
+        $specializations = $this->Teacher->getSpecializations();
+        $genders = $this->Teacher->getGenders();
+        return view('pages.teachers.create',compact('specializations','genders'));
     }
 
     /**
@@ -37,7 +43,9 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         return $this->Teacher->storeTeachers($request);
+        // return redirect()->route('teachers.create');
+
     }
 
     /**
@@ -51,24 +59,34 @@ class TeacherController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Teacher $teacher)
+    public function edit($id)
     {
-        //
+       $Teachers= $this->Teacher->editTeachers($id);
+        $specializations = $this->Teacher->getSpecializations();
+        $genders = $this->Teacher->getGenders();
+
+
+        return view('pages.teachers.edit',compact('Teachers','genders','specializations'));
+
+
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Teacher $teacher)
-    {
-        //
-    }
+    public function update(Request $request)
+{
+    return $this->Teacher->updateTeacher($request);
+
+
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Teacher $teacher)
+    public function destroy( Request $request)
     {
-        //
+         return $this->Teacher->deleteTeacher($request);
     }
 }

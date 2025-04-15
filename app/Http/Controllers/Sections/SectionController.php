@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Models\Grade;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Teacher;
 
 use function Pest\version;
 
@@ -17,9 +18,10 @@ class SectionController extends Controller
     public function index()
     {
         $grades = Grade::with(['sections'])->get();
+        $teachers = Teacher::all();
 
         $listGrades = Grade::all();
-        return view('pages.sections.sections', compact('grades', 'listGrades'));
+        return view('pages.sections.sections', compact('grades', 'listGrades', 'teachers'));
     }
 
     /**
@@ -43,7 +45,8 @@ class SectionController extends Controller
             $section->classId = $request->Class_id;
             $section->status = 1;
             $section->save();
-            toastr()->success(trans('messages.success'));
+            $section->teachers()->attach($request->teacher_id);
+            toastr()->success(trans('messages.success'), ' ');
 
             return redirect()->route('sections.index');
         } catch (\Exception $e) {
@@ -51,7 +54,7 @@ class SectionController extends Controller
         }
     }
 
-    
+
     public function update(Request $request, $id)
     {
         try {
@@ -61,8 +64,18 @@ class SectionController extends Controller
                 'en' => $request->name_en,
                 'ar' => $request->name_ar,
             ];
-            $section->status = $request->status;
+            if (isset($request->status)) {
+                $section->status = 1;
+            } else {
+                $section->status = 2;
+            }
+
             $section->classId = $request->Class_id;
+            if (isset($request->teacher_id)) {
+                $section->teachers()->sync($request->teacher_id);
+            } else {
+                $section->teachers()->sync(array());
+            }
             $section->save();
             toastr()->success(trans('messages.update'), ' ');
             return redirect()->route('sections.index');

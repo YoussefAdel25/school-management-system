@@ -5,6 +5,7 @@ return [
     'nameClass' => 'Classroom',
     'nameGrade' => 'Grade',
     'selectGrade' => 'Select Grade',
+    'selectClass'=>'Select Classroom',
     'processes' => 'Processes',
     'addSection' => 'Add New Section',
     'englishSection' => 'Section name in English',

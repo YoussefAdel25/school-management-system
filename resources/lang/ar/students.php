@@ -31,7 +31,7 @@ return [
     'close' => 'اغلاق',
     'submit' => 'حفظ',
     'Choose' => 'اختيار من القائمة',
-    'Attachments' => 'المرفقات',
+    'attachments' => 'المرفقات',
     'Processes' => 'العمليات',
 
 

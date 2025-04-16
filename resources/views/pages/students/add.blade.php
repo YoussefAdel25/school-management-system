@@ -56,7 +56,8 @@
             margin-top: 30px;
         }
         .container-fluid {
-            padding: 20px;
+            padding:0px;
+            margin-top: 0; /* نضمن مفيش مسافة زايدة */
         }
     </style>
 @endsection
@@ -66,22 +67,29 @@
 @endsection
 
 @section('page-header')
-    <div class="page-header py-4 px-3 mb-4 rounded shadow-sm" style="background-color: #e0f2fe;">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex align-items-center gap-3">
-                <div class="icon bg-blue-500 text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+@section('page-header')
+    <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between bg-gradient-light p-4 rounded shadow-sm mb-4" style="border-bottom: 4px solid #ccc;">
+            <div class="d-flex align-items-center gap-4">
+                <div class="bg-primary text-white d-flex justify-content-center align-items-center rounded-circle" style="width: 55px; height: 55px;">
                     <i class="fas fa-user-plus fa-lg"></i>
                 </div>
                 <div>
-                    <h2 class="mb-1 fw-bold text-dark" style="font-size: 1.75rem;">
+                    <h2 class="mb-0 text-dark" style="font-size: 1.75rem; font-weight: 600;">
                         {{ trans('students.addStudent') }}
                     </h2>
-                    <small class="text-muted">{{ trans('students.addNewStudentInfo') ?? 'أدخل بيانات الطالب الجديد' }}</small>
+                    <p class="text-muted mb-0" style="font-size: 1rem;">
+                        {{ trans('students.addNewStudentInfo') ?? 'أدخل بيانات الطالب الجديد بطريقة منظمة وسهلة' }}
+                    </p>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
+
+@endsection
+
 
 @section('content')
 <div class="container-fluid">
@@ -99,33 +107,43 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('students.store') }}" autocomplete="off">
+                    <form method="POST" action="{{ route('students.store') }}" autocomplete="off" enctype="multipart/form-data">
                         @csrf
-
                         <!-- Personal Information -->
                         <div class="form-section">
                             <div class="section-title">{{ trans('students.personalInformation') }}</div>
                             <div class="form-row">
+                                {{-- Email --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.Email') }}</label>
                                     <input type="email" name="email" required>
                                 </div>
+
+                                {{-- Password --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.Password') }}</label>
                                     <input type="password" name="password" required>
                                 </div>
+
+                                {{-- Name Arabic --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.NameAr') }}</label>
                                     <input type="text" name="nameAr" required>
                                 </div>
+
+                                {{-- Name English --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.NameEn') }}</label>
                                     <input type="text" name="nameEn" required>
                                 </div>
+
+                                {{-- National ID --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.nationalId') }}</label>
                                     <input type="text" name="nationalId" required>
                                 </div>
+
+                                {{-- Gender --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.gender') }}</label>
                                     <select name="genderId" required>
@@ -135,6 +153,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Religion --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.religion') }}</label>
                                     <select name="religionId" required>
@@ -144,6 +164,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Nationality --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.nationality') }}</label>
                                     <select name="nationalityId" required>
@@ -153,6 +175,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Blood Type --}}
                                 <div class="form-group">
                                     <label>{{ trans('students.blood') }}</label>
                                     <select name="bloodId">
@@ -162,6 +186,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Birth Date --}}
                                 <div class="form-group full-width">
                                     <label>{{ trans('students.birthDate') }}</label>
                                     <input type="text" id="datepicker-action" name="dateBirth" data-date-format="yyyy-mm-dd">
@@ -173,6 +199,8 @@
                         <div class="form-section">
                             <div class="section-title">{{ trans('students.studentInformation') }}</div>
                             <div class="form-row">
+
+                                {{-- Grade --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('grades.name') }}</label>
                                     <select name="gradeId" id="gradeId" required>
@@ -182,14 +210,20 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Class --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('classes.name') }}</label>
                                     <select name="classId" id="classId" required></select>
                                 </div>
+
+                                {{-- Section --}}
                                 <div class="form-group">
                                     <label>{{ trans('sections.name') }}</label>
                                     <select name="sectionId" id="sectionId"></select>
                                 </div>
+
+                                {{-- Parent --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.fatherName') }}</label>
                                     <select name="parentId" required>
@@ -199,6 +233,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Academic Year --}}
                                 <div class="form-group">
                                     <label class="required">{{ trans('students.academicYear') }}</label>
                                     <select name="academicYear" required>
@@ -209,8 +245,15 @@
                                         @endfor
                                     </select>
                                 </div>
+
+                                {{-- Attachments --}}
+                                <div class="form-group full-width">
+                                    <label class="required">{{ trans('students.attachments') }}</label>
+                                    <input type="file" accept="image/*" name="photos[]" multiple>
+                                </div>
                             </div>
                         </div>
+
 
                         <!-- Submit Button -->
                         <div class="submit-btn">

@@ -3,25 +3,6 @@
 @section('css')
 @toastr_css
 <style>
-    .page-header {
-        background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
-        color: #fff;
-        padding: 30px 40px;
-        border-radius: 12px;
-        margin-bottom: 30px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .page-header h2 {
-        margin: 0;
-        font-size: 2rem;
-        font-weight: bold;
-    }
-
-    .page-header small {
-        font-size: 0.95rem;
-        opacity: 0.9;
-    }
 
     .add-btn {
         background-color: #fff;
@@ -59,16 +40,19 @@
 @endsection
 
 @section('page-header')
-<div class="page-header d-flex justify-content-between align-items-center">
-    <div>
-        <h2>{{ trans('main-sidebar.studentsList') }}</h2>
-        <small>{{ trans(key: 'students.totalStudents') }}: {{ $students->count() }}</small>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm mb-4">
+        <div>
+            <h2 class="text-dark" style="font-size: 1.75rem; font-weight: 600;">{{ trans('main-sidebar.studentsList') }}</h2>
+            <small class="text-muted" style="font-size: 1rem;">{{ trans('students.totalStudents') }}: {{ $students->count() }}</small>
+        </div>
+        <a href="{{ route('students.create') }}" class="btn btn-primary d-flex align-items-center">
+            <i class="fa fa-plus mr-2"></i> {{ trans('students.addStudent') }}
+        </a>
     </div>
-    <a href="{{ route('students.create') }}" class="btn add-btn">
-        <i class="fa fa-plus"></i> {{ trans('students.addStudent') }}
-    </a>
 </div>
 @endsection
+
 
 @section('content')
 <div class="container-fluid">

@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Livewire;
 
 use App\Models\Blood;
-use App\Models\myParent;
-use App\Models\MyParent_Attachment;
-use App\Models\Nationality;
-use App\Models\Religion;
+use App\Models\Image;
 use Livewire\Component;
-use Illuminate\Support\Facades\Hash;
+use App\Models\myParent;
+use App\Models\Religion;
+use App\Models\Nationality;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\DB;
+use App\Models\MyParent_Attachment;
+use Illuminate\Support\Facades\Hash;
 
 
 class AddParent extends Component
@@ -127,9 +129,12 @@ class AddParent extends Component
     public function submitForm()
     {
         try {
+            // بداية المعاملة
+            DB::beginTransaction();
 
-            $myParents = new myParent();
-            //Father Inputs
+            $myParents = new MyParent();
+
+            // إدخال بيانات الأب
             $myParents->email = $this->Email;
             $myParents->password = Hash::make($this->Password);
             $myParents->fatherName = ['en' => $this->Name_Father_en, 'ar' => $this->Name_Father];
@@ -142,7 +147,7 @@ class AddParent extends Component
             $myParents->religionFatherId = $this->Religion_Father_id;
             $myParents->addressFather = $this->Address_Father;
 
-            //Mother Inputs
+            // إدخال بيانات الأم
             $myParents->nameMother = ['en' => $this->Name_Mother_en, 'ar' => $this->Name_Mother];
             $myParents->nationalIdMother = $this->National_ID_Mother;
             $myParents->passportIdMother = $this->Passport_ID_Mother;
@@ -152,33 +157,43 @@ class AddParent extends Component
             $myParents->bloodMotherId = $this->Blood_Type_Mother_id;
             $myParents->religionMotherId = $this->Religion_Mother_id;
             $myParents->addressMother = $this->Address_Mother;
+
+            // حفظ الأب والأم في قاعدة البيانات
             $myParents->save();
 
+            // التعامل مع الصور إذا كانت موجودة
             if (!empty($this->photos)) {
                 foreach ($this->photos as $photo) {
                     try {
-                        $photo->storeAs($this->National_ID_Father, $photo->getClientOriginalName(), 'parent_attachments');
+                        $name = $photo->getClientOriginalName();
+                        $photo->storeAs($this->National_ID_Father, $photo->getClientOriginalName(), $disk = 'parent_attachments');
 
-                        MyParent_Attachment::create([
-                            'file_name' => $photo->getClientOriginalName(),
-                            'myParent_id' => myParent::latest()->first()->id,
-                        ]);
+                        // إضافة الصورة إلى جدول الصور
+                        $image = new Image();
+                        $image->filename = $name;
+                        $image->imageable_id = $myParents->id;  // تأكد من استخدام id الأب والأم
+                        $image->imageable_type = 'App\Models\MyParent';  // التأكد من أنه MyParent وليس Student
+                        $image->save();
                     } catch (\Exception $e) {
-                        // Log the error
+                        // في حال حدوث خطأ أثناء التعامل مع الصور
                         $this->catchError = $e->getMessage();
                     }
                 }
             }
 
+            // تأكيد النجاح
+            DB::commit();
             $this->successMessage = trans('messages.success');
             $this->clearForm();
             $this->currentStep = 1;
 
         } catch (\Exception $e) {
-
+            // في حال حدوث خطأ أثناء عملية الإرسال
+            DB::rollback();
             $this->catchError = $e->getMessage();
         }
     }
+
 
     public function showformadd(){
         $this->show_table = false;

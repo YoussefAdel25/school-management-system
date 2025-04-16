@@ -21,4 +21,8 @@ class myParent extends Model
     protected $table ='my_parents';
     protected $guarded = [];
     use HasFactory;
+
+    public function images(){
+        return $this->morphMany('App\Models\Image','imageable');
+    }
 }

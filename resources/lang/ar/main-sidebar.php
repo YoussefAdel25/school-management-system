@@ -14,7 +14,10 @@ return [
     'List_Parents'=>'قائمة اولياء الامور',
     'Add_Parent'=>'اضافة ولي امر',
     'teachers' =>'المدرسين',
-    'teachersList'=>'قائمة المدرسين'
+    'teachersList'=>'قائمة المدرسين',
+    'students' =>'الطلاب',
+    'studentsList' =>'قائمة الطلاب',
+
 
 
 ];

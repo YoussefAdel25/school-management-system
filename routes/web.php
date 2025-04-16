@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Livewire\AddParent;
 use App\Http\Controllers\Grades\GradesController;
 use App\Http\Controllers\Sections\SectionController;
-use App\Http\Controllers\Classrooms\ClassroomController;
+use App\Http\Controllers\Students\StudentController;
 use App\Http\Controllers\Teachers\TeacherController;
+use App\Http\Controllers\Classrooms\ClassroomController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
@@ -68,6 +69,18 @@ Route::group(
         });
 
 
+        // /=========================================================Students======================================================
+        Route::prefix('students')->name('students.')->controller(StudentController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::patch('/update','update')->name('update');
+            Route::delete('/destroy', 'destroy')->name('destroy');
+            Route::get('/Get_classrooms/{id}', 'Get_classrooms');
+            Route::get('/Get_Sections/{id}', 'Get_Sections');
+        });
+
         // /=========================================================Teachers======================================================
         Route::prefix('teachers')->name('teachers.')->controller(TeacherController::class)->group(function () {
             Route::get('/', 'index')->name('index');
@@ -77,7 +90,6 @@ Route::group(
             Route::patch('/update','update')->name('update');
             Route::delete('/destroy', 'destroy')->name('destroy');
         });
-
             // Route::resource('teachers/', TeacherController::class);//
 
 

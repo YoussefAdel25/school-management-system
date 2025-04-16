@@ -76,7 +76,18 @@
                     </li>
 
 
-
+                    <!-- students-->
+                    <li>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#students-menu">
+                            <div class="pull-left"><i class="fas fa-user-graduate"></i></i></i><span
+                                    class="right-nav-text">{{trans('main-sidebar.students')}}</span></div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        <ul id="students-menu" class="collapse" data-parent="#sidebarnav">
+                            <li> <a href="{{route('students.index')}}">{{trans('main-sidebar.studentsList')}}</a> </li>
+                        </ul>
+                    </li>
 
 
 

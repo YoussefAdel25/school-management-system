@@ -31,6 +31,6 @@ class Section extends Model
 
     public function teachers()
     {
-        return $this->belongsToMany('App\Models\Teacher','teachers_sections');
+        return $this->belongsToMany('App\Models\Teacher','teacher_section');
     }
 }

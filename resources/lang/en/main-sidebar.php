@@ -14,7 +14,11 @@ return [
     'Add_Parent'=>'Add Parent',
     'List_Parents'=>'List Parents',
     'teachers' =>'Teachers',
-    'teachersList'=>'Teachers List'
+    'teachersList'=>'Teachers List',
+    'students' =>'Students',
+    'studentsList' =>'Students List',
+
+
 
 
 ];

@@ -26,6 +26,6 @@ class Teacher extends Model
 
      public function sections()
      {
-         return $this->belongsToMany('App\Models\Section','teachers_sections');
+         return $this->belongsToMany('App\Models\Section','teacher_section');
      }
 }
